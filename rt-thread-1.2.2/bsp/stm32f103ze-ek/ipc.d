@@ -1,0 +1,10 @@
+.\ipc.o: ..\..\src\ipc.c
+.\ipc.o: ..\..\include\rtthread.h
+.\ipc.o: .\rtconfig.h
+.\ipc.o: ..\..\include\rtdebug.h
+.\ipc.o: ..\..\include\rtdef.h
+.\ipc.o: C:\Keil\ARM\ARMCC\bin\..\include\stdarg.h
+.\ipc.o: ..\..\include\rtservice.h
+.\ipc.o: ..\..\include\rtm.h
+.\ipc.o: ..\..\include\rtthread.h
+.\ipc.o: ..\..\include\rthw.h

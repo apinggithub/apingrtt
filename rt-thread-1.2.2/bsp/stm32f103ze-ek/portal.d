@@ -1,0 +1,11 @@
+.\portal.o: ..\..\components\drivers\src\portal.c
+.\portal.o: ..\..\include\rtthread.h
+.\portal.o: .\rtconfig.h
+.\portal.o: ..\..\include\rtdebug.h
+.\portal.o: ..\..\include\rtdef.h
+.\portal.o: C:\Keil\ARM\ARMCC\bin\..\include\stdarg.h
+.\portal.o: ..\..\include\rtservice.h
+.\portal.o: ..\..\include\rtm.h
+.\portal.o: ..\..\include\rtthread.h
+.\portal.o: ..\..\components\drivers\include\rtdevice.h
+.\portal.o: ..\..\components\drivers\include\drivers/serial.h

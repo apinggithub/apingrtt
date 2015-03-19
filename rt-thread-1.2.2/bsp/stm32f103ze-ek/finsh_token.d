@@ -1,0 +1,15 @@
+.\finsh_token.o: ..\..\components\finsh\finsh_token.c
+.\finsh_token.o: ..\..\components\finsh\finsh.h
+.\finsh_token.o: ..\..\include\rtthread.h
+.\finsh_token.o: .\rtconfig.h
+.\finsh_token.o: ..\..\include\rtdebug.h
+.\finsh_token.o: ..\..\include\rtdef.h
+.\finsh_token.o: C:\Keil\ARM\ARMCC\bin\..\include\stdarg.h
+.\finsh_token.o: ..\..\include\rtservice.h
+.\finsh_token.o: ..\..\include\rtm.h
+.\finsh_token.o: ..\..\include\rtthread.h
+.\finsh_token.o: C:\Keil\ARM\ARMCC\bin\..\include\ctype.h
+.\finsh_token.o: C:\Keil\ARM\ARMCC\bin\..\include\stdlib.h
+.\finsh_token.o: C:\Keil\ARM\ARMCC\bin\..\include\string.h
+.\finsh_token.o: ..\..\components\finsh\finsh_token.h
+.\finsh_token.o: ..\..\components\finsh\finsh_error.h

@@ -1,0 +1,12 @@
+.\serial.o: ..\..\components\drivers\serial\serial.c
+.\serial.o: ..\..\include\rthw.h
+.\serial.o: ..\..\include\rtthread.h
+.\serial.o: .\rtconfig.h
+.\serial.o: ..\..\include\rtdebug.h
+.\serial.o: ..\..\include\rtdef.h
+.\serial.o: C:\Keil\ARM\ARMCC\bin\..\include\stdarg.h
+.\serial.o: ..\..\include\rtservice.h
+.\serial.o: ..\..\include\rtm.h
+.\serial.o: ..\..\include\rtthread.h
+.\serial.o: ..\..\components\drivers\include\rtdevice.h
+.\serial.o: ..\..\components\drivers\include\drivers/serial.h
