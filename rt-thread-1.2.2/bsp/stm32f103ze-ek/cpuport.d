@@ -1,9 +1,0 @@
-.\cpuport.o: ..\..\libcpu\arm\cortex-m3\cpuport.c
-.\cpuport.o: ..\..\include\rtthread.h
-.\cpuport.o: .\rtconfig.h
-.\cpuport.o: ..\..\include\rtdebug.h
-.\cpuport.o: ..\..\include\rtdef.h
-.\cpuport.o: C:\Keil\ARM\ARMCC\bin\..\include\stdarg.h
-.\cpuport.o: ..\..\include\rtservice.h
-.\cpuport.o: ..\..\include\rtm.h
-.\cpuport.o: ..\..\include\rtthread.h

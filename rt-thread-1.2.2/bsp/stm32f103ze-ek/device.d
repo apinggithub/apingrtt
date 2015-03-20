@@ -1,9 +1,0 @@
-.\device.o: ..\..\src\device.c
-.\device.o: ..\..\include\rtthread.h
-.\device.o: .\rtconfig.h
-.\device.o: ..\..\include\rtdebug.h
-.\device.o: ..\..\include\rtdef.h
-.\device.o: C:\Keil\ARM\ARMCC\bin\..\include\stdarg.h
-.\device.o: ..\..\include\rtservice.h
-.\device.o: ..\..\include\rtm.h
-.\device.o: ..\..\include\rtthread.h

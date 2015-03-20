@@ -1,9 +1,0 @@
-.\showmem.o: ..\..\libcpu\arm\common\showmem.c
-.\showmem.o: ..\..\include\rtthread.h
-.\showmem.o: .\rtconfig.h
-.\showmem.o: ..\..\include\rtdebug.h
-.\showmem.o: ..\..\include\rtdef.h
-.\showmem.o: C:\Keil\ARM\ARMCC\bin\..\include\stdarg.h
-.\showmem.o: ..\..\include\rtservice.h
-.\showmem.o: ..\..\include\rtm.h
-.\showmem.o: ..\..\include\rtthread.h
