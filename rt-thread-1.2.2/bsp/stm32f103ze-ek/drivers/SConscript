@@ -16,15 +16,15 @@ usart.c
 if GetDepend('RT_USING_LWIP'):
     src += ['dm9000a.c']
 
-# add Ethernet drvers.
+# add DFS drvers.
 if GetDepend('RT_USING_DFS'):
-    src += ['sdcard.c']
+    src += ['rt_spi_device.c','rt_stm32f10x_spi.c','spi_flash_w25qxx.c','fs_test.c']
 
-# add Ethernet drvers.
+# add RTC drvers.
 if GetDepend('RT_USING_RTC'):
     src += ['rtc.c']
 
-# add Ethernet drvers.
+# add RTGUI drvers.
 if GetDepend('RT_USING_RTGUI'):
     src += ['touch.c']
     if rtconfig.RT_USING_LCD_TYPE == 'ILI932X':

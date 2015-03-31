@@ -42,6 +42,8 @@
 
 #include "led.h"
 
+extern void rt_spi_device_init(void);
+
 ALIGN(RT_ALIGN_SIZE)
 static rt_uint8_t led_stack[ 512 ];
 static struct rt_thread led_thread;
@@ -93,6 +95,8 @@ void rt_init_thread_entry(void* parameter)
     /* initialization RT-Thread Components */
     rt_components_init();
 #endif
+	
+		rt_spi_device_init();
 
 #ifdef  RT_USING_FINSH
     finsh_set_device(RT_CONSOLE_DEVICE_NAME);
@@ -100,13 +104,13 @@ void rt_init_thread_entry(void* parameter)
 
     /* Filesystem Initialization */
 #if defined(RT_USING_DFS) && defined(RT_USING_DFS_ELMFAT)
-    /* mount sd card fat partition 1 as root directory */
-    if (dfs_mount("sd0", "/", "elm", 0, 0) == 0)
+     /* mount SPI flash as root directory */ 
+    if (dfs_mount("flash0", "/", "elm", 0, 0) == 0)
     {
-        rt_kprintf("File System initialized!\n");
+        rt_kprintf("flash0 mount to /.\n");
     }
     else
-        rt_kprintf("File System initialzation failed!\n");
+        rt_kprintf("flash0 mount to / failed.\n");
 #endif  /* RT_USING_DFS */
 
 #ifdef RT_USING_RTGUI

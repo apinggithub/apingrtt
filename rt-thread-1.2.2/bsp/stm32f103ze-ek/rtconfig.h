@@ -76,14 +76,23 @@
 
 /* SECTION: finsh, a C-Express shell */
 #define RT_USING_FINSH
+/*Support MSH style*/
+#define FINSH_USING_MSH
+/*Support MSH style only,not support C-Express*/
+//#define FINSH_USING_MSH_ONLY
+/*Support work dictionary,when use MSH style shell,suggest open this option*/
+#define DFS_USING_WORKDIR
+/*Support historical retrospect*/
+#define FINSH_USING_HISTORY
 /* Using symbol table */
 #define FINSH_USING_SYMTAB
 #define FINSH_USING_DESCRIPTION
 
 /* SECTION: device filesystem */
+#define RT_USING_SPI
 #define RT_USING_DFS
-
 #define RT_USING_DFS_ELMFAT
+#define RT_DFS_ELM_WORD_ACCESS
 /* Reentrancy (thread safe) of the FatFs module.  */
 #define RT_DFS_ELM_REENTRANT
 /* Number of volumes (logical drives) to be used. */
@@ -92,7 +101,7 @@
 /* #define RT_DFS_ELM_CODE_PAGE			936 */
 #define RT_DFS_ELM_MAX_LFN			255
 /* Maximum sector size to be handled. */
-#define RT_DFS_ELM_MAX_SECTOR_SIZE  512
+#define RT_DFS_ELM_MAX_SECTOR_SIZE  4096 /*SPI Flash Sector size*/
 
 /* the max number of mounted filesystem */
 #define DFS_FILESYSTEMS_MAX			2
