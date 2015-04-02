@@ -109,7 +109,8 @@
 #define DFS_FD_MAX					4
 
 /* SECTION: lwip, a lighwight TCP/IP protocol stack */
-/* #define RT_USING_LWIP */
+ #define RT_USING_LWIP 
+ #define RT_USING_LWIP141
 /* LwIP uses RT-Thread Memory Management */
 #define RT_LWIP_USING_RT_MEM
 /* Enable ICMP protocol*/
@@ -131,7 +132,7 @@
 #define RT_LWIP_IPADDR0	192
 #define RT_LWIP_IPADDR1	168
 #define RT_LWIP_IPADDR2	1
-#define RT_LWIP_IPADDR3	30
+#define RT_LWIP_IPADDR3	133
 
 /* gateway address of target*/
 #define RT_LWIP_GWADDR0	192

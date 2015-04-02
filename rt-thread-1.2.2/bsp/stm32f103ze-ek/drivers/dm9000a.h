@@ -15,11 +15,11 @@
 #ifndef __DM9000_H__
 #define __DM9000_H__
 
-#define DM9000_IO_BASE		0x6C000000
-#define DM9000_DATA_BASE	0x6C000008
+#define DM9000_IO_BASE		0x6C100000
+#define DM9000_DATA_BASE	0x6C100008
 
-#define    DM9000_IO 	(*((volatile rt_uint16_t *) 0x6C000000)) // CMD = 0
-#define    DM9000_DATA 	(*((volatile rt_uint16_t *) 0x6C000008)) // CMD = 1
+#define    DM9000_IO 	(*((volatile rt_uint16_t *) 0x6C100000)) // CMD = 0
+#define    DM9000_DATA 	(*((volatile rt_uint16_t *) 0x6C100008)) // CMD = 1
 
 #define DM9000_inb(r) 		(*(volatile rt_uint8_t *)r)
 #define DM9000_outb(r, d) 	(*(volatile rt_uint8_t *)r = d)

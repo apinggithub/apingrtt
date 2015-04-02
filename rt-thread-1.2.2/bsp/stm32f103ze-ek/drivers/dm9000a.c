@@ -173,7 +173,7 @@ void rt_dm9000_isr()
     int_status = dm9000_io_read(DM9000_ISR);               /* Got ISR */
     dm9000_io_write(DM9000_ISR, int_status);    /* Clear ISR status */
 
-	DM9000_TRACE("dm9000 isr: int status %04x\n", int_status);
+		DM9000_TRACE("dm9000 isr: int status %04x\n", int_status);
 
     /* receive overflow */
     if (int_status & ISR_ROS)
@@ -189,8 +189,10 @@ void rt_dm9000_isr()
     /* Received the coming packet */
     if (int_status & ISR_PRS)
     {
-	    /* disable receive interrupt */
-	    dm9000_device.imr_all = IMR_PAR | IMR_PTM;
+				/* disable receive interrupt */
+      
+				dm9000_device.imr_all = IMR_PAR | IMR_PTM;
+      
 
         /* a frame has been received */
         eth_device_ready(&(dm9000_device.parent));
@@ -376,7 +378,7 @@ static rt_err_t rt_dm9000_control(rt_device_t dev, rt_uint8_t cmd, void *args)
 /* transmit packet. */
 rt_err_t rt_dm9000_tx( rt_device_t dev, struct pbuf* p)
 {
-	DM9000_TRACE("dm9000 tx: %d\n", p->tot_len);
+		DM9000_TRACE("dm9000 tx: %d\n", p->tot_len);
 
     /* lock DM9000 device */
     rt_sem_take(&sem_lock, RT_WAITING_FOREVER);
@@ -451,7 +453,7 @@ rt_err_t rt_dm9000_tx( rt_device_t dev, struct pbuf* p)
     /* wait ack */
     rt_sem_take(&sem_ack, RT_WAITING_FOREVER);
 
-	DM9000_TRACE("dm9000 tx done\n");
+		DM9000_TRACE("dm9000 tx done\n");
 
     return RT_EOK;
 }
@@ -478,7 +480,7 @@ struct pbuf *rt_dm9000_rx(rt_device_t dev)
 
         if (rxbyte > 1)
         {
-			DM9000_TRACE("dm9000 rx: rx error, stop device\n");
+						DM9000_TRACE("dm9000 rx: rx error, stop device\n");
 
             dm9000_io_write(DM9000_RCR, 0x00);	/* Stop Device */
             dm9000_io_write(DM9000_ISR, 0x80);	/* Stop INT request */
@@ -490,7 +492,7 @@ struct pbuf *rt_dm9000_rx(rt_device_t dev)
         rx_status = DM9000_inw(DM9000_DATA_BASE);
         rx_len = DM9000_inw(DM9000_DATA_BASE);
 
-		DM9000_TRACE("dm9000 rx: status %04x len %d\n", rx_status, rx_len);
+				DM9000_TRACE("dm9000 rx: status %04x len %d\n", rx_status, rx_len);
 
         /* allocate buffer */
         p = pbuf_alloc(PBUF_LINK, rx_len, PBUF_RAM);
@@ -511,18 +513,18 @@ struct pbuf *rt_dm9000_rx(rt_device_t dev)
                     len -= 2;
                 }
             }
-			DM9000_TRACE("\n");
+						DM9000_TRACE("\n");
         }
         else
         {
             rt_uint16_t dummy;
-			rt_int32_t len;
+						rt_int32_t len;
 
-			DM9000_TRACE("dm9000 rx: no pbuf\n");
+						DM9000_TRACE("dm9000 rx: no pbuf\n");
 
             /* no pbuf, discard data from DM9000 */
             data = &dummy;
-			len = rx_len;
+						len = rx_len;
             while (len > 0)
             {
                 *data = DM9000_inw(DM9000_DATA_BASE);
@@ -533,7 +535,7 @@ struct pbuf *rt_dm9000_rx(rt_device_t dev)
         if ((rx_status & 0xbf00) || (rx_len < 0x40)
                 || (rx_len > DM9000_PKT_MAX))
         {
-			rt_kprintf("rx error: status %04x\n", rx_status);
+						rt_kprintf("rx error: status %04x\n", rx_status);
 
             if (rx_status & 0x100)
             {
@@ -564,7 +566,7 @@ struct pbuf *rt_dm9000_rx(rt_device_t dev)
     else
     {
         /* restore receive interrupt */
-	    dm9000_device.imr_all = IMR_PAR | IMR_PTM | IMR_PRM;
+				dm9000_device.imr_all = IMR_PAR | IMR_PTM | IMR_PRM;
         dm9000_io_write(DM9000_IMR, dm9000_device.imr_all);
     }
 
@@ -578,16 +580,16 @@ static void RCC_Configuration(void)
 {
     /* enable gpiob port clock */
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOF | RCC_APB2Periph_GPIOE | RCC_APB2Periph_AFIO, ENABLE);
-	/* enable FSMC clock */
-	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_FSMC, ENABLE);
+	  /* enable FSMC clock */
+	  RCC_AHBPeriphClockCmd(RCC_AHBPeriph_FSMC, ENABLE);
 }
 
 static void NVIC_Configuration(void)
 {
     NVIC_InitTypeDef NVIC_InitStructure;
 
-    /* Enable the EXTI4 Interrupt */
-    NVIC_InitStructure.NVIC_IRQChannel = EXTI4_IRQn;
+    /* Enable the EXTI1 Interrupt */
+    NVIC_InitStructure.NVIC_IRQChannel = EXTI1_IRQn;
     NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 1;
     NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
@@ -600,37 +602,37 @@ static void GPIO_Configuration()
     EXTI_InitTypeDef EXTI_InitStructure;
 
     /* configure PE5 as eth RST */
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOE,&GPIO_InitStructure);
-    GPIO_SetBits(GPIOE,GPIO_Pin_5);
+    //GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;
+    //GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+    //GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+    //GPIO_Init(GPIOE,&GPIO_InitStructure);
+    //GPIO_SetBits(GPIOE,GPIO_Pin_5);
     //RST_1();
 
-    /* configure PE4 as external interrupt */
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4;
+    /* configure PA1 as external interrupt */
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPD;
-    GPIO_Init(GPIOE, &GPIO_InitStructure);
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+    GPIO_Init(GPIOA, &GPIO_InitStructure);
 
-    /* Connect DM9000 EXTI Line to GPIOE Pin 4 */
-    GPIO_EXTILineConfig(GPIO_PortSourceGPIOE, GPIO_PinSource4);
+    /* Connect DM9000 EXTI Line to GPIOE Pin 1 */
+    GPIO_EXTILineConfig(GPIO_PortSourceGPIOA, GPIO_PinSource1);
 
     /* Configure DM9000 EXTI Line to generate an interrupt on falling edge */
-    EXTI_InitStructure.EXTI_Line = EXTI_Line4;
+    EXTI_InitStructure.EXTI_Line = EXTI_Line1;
     EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
-    EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;
+    EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Falling;
     EXTI_InitStructure.EXTI_LineCmd = ENABLE;
     EXTI_Init(&EXTI_InitStructure);
 
     /* Clear DM9000A EXTI line pending bit */
-    EXTI_ClearITPendingBit(EXTI_Line4);
+    EXTI_ClearITPendingBit(EXTI_Line1);
 }
 
 static void FSMC_Configuration()
 {
 	FSMC_NORSRAMInitTypeDef FSMC_NORSRAMInitStructure;
-	FSMC_NORSRAMTimingInitTypeDef p;
+	FSMC_NORSRAMTimingInitTypeDef FSMC_NORSRAMTimingInitStructure;
 
     /* FSMC GPIO configure */
     {
@@ -677,6 +679,9 @@ static void FSMC_Configuration()
         GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11 | GPIO_Pin_12 | GPIO_Pin_13;
         GPIO_Init(GPIOD,&GPIO_InitStructure);
 
+        /* FSMC_A19 ~ FSMC_A22  PE3~PE6 */
+        GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3 | GPIO_Pin_4 | GPIO_Pin_5 | GPIO_Pin_6;
+        GPIO_Init(GPIOE,&GPIO_InitStructure);
         /* RD-PD4 WR-PD5 */
         GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5;
         GPIO_Init(GPIOD,&GPIO_InitStructure);
@@ -700,14 +705,17 @@ static void FSMC_Configuration()
     }
     /* FSMC GPIO configure */
 
-	/*-- FSMC Configuration ------------------------------------------------------*/
-	p.FSMC_AddressSetupTime = 0;
-	p.FSMC_AddressHoldTime = 0;
-	p.FSMC_DataSetupTime = 2;
-	p.FSMC_BusTurnAroundDuration = 0;
-	p.FSMC_CLKDivision = 0;
-	p.FSMC_DataLatency = 0;
-	p.FSMC_AccessMode = FSMC_AccessMode_A;
+
+    /*-- FSMC Configuration ------------------------------------------------------*/
+    /*----------------------- SRAM Bank 4 ----------------------------------------*/
+    /* FSMC_Bank1_NORSRAM4 configuration */
+    FSMC_NORSRAMTimingInitStructure.FSMC_AddressSetupTime = 0;
+    FSMC_NORSRAMTimingInitStructure.FSMC_AddressHoldTime = 0;
+    FSMC_NORSRAMTimingInitStructure.FSMC_DataSetupTime = 2;
+    FSMC_NORSRAMTimingInitStructure.FSMC_BusTurnAroundDuration = 0;
+    FSMC_NORSRAMTimingInitStructure.FSMC_CLKDivision = 0;
+    FSMC_NORSRAMTimingInitStructure.FSMC_DataLatency = 0;
+    FSMC_NORSRAMTimingInitStructure.FSMC_AccessMode = FSMC_AccessMode_A;
 
 	FSMC_NORSRAMInitStructure.FSMC_Bank = FSMC_Bank1_NORSRAM4;
 	FSMC_NORSRAMInitStructure.FSMC_DataAddressMux = FSMC_DataAddressMux_Disable;
@@ -722,8 +730,8 @@ static void FSMC_Configuration()
 	FSMC_NORSRAMInitStructure.FSMC_WaitSignal = FSMC_WaitSignal_Disable;
 	FSMC_NORSRAMInitStructure.FSMC_ExtendedMode = FSMC_ExtendedMode_Disable;
 	FSMC_NORSRAMInitStructure.FSMC_WriteBurst = FSMC_WriteBurst_Disable;
-	FSMC_NORSRAMInitStructure.FSMC_ReadWriteTimingStruct = &p;
-	FSMC_NORSRAMInitStructure.FSMC_WriteTimingStruct = &p;
+	FSMC_NORSRAMInitStructure.FSMC_ReadWriteTimingStruct = &FSMC_NORSRAMTimingInitStructure;
+	FSMC_NORSRAMInitStructure.FSMC_WriteTimingStruct = &FSMC_NORSRAMTimingInitStructure;
 
 	FSMC_NORSRAMInit(&FSMC_NORSRAMInitStructure);
 
@@ -736,15 +744,15 @@ int rt_hw_dm9000_init(void)
     RCC_Configuration();
     NVIC_Configuration();
     GPIO_Configuration();
-	FSMC_Configuration();
+		FSMC_Configuration();
 
     rt_sem_init(&sem_ack, "tx_ack", 1, RT_IPC_FLAG_FIFO);
     rt_sem_init(&sem_lock, "eth_lock", 1, RT_IPC_FLAG_FIFO);
 
     dm9000_device.type  = TYPE_DM9000A;
-	dm9000_device.mode	= DM9000_AUTO;
-	dm9000_device.packet_cnt = 0;
-	dm9000_device.queue_packet_len = 0;
+		dm9000_device.mode	= DM9000_AUTO;
+		dm9000_device.packet_cnt = 0;
+		dm9000_device.queue_packet_len = 0;
 
     /*
      * SRAM Tx/Rx pointer automatically return to start address,

@@ -111,6 +111,13 @@ void rt_init_thread_entry(void* parameter)
     }
     else
         rt_kprintf("flash0 mount to / failed.\n");
+		/* mount SD Card as /dev/sd directory */ 
+    if (dfs_mount("sd0", "/dev", "elm", 0, 0) == 0)
+    {
+        rt_kprintf("sd0 mount to /dev.\n");
+    }
+    else
+        rt_kprintf("sd0 mount to /dev failed.\n");
 #endif  /* RT_USING_DFS */
 
 #ifdef RT_USING_RTGUI

@@ -3165,11 +3165,11 @@ int rt_hw_sdcard_init(void)
     GPIO_InitTypeDef GPIO_InitStructure;
 
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC,ENABLE);
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_7;
     GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_Out_PP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
     GPIO_Init(GPIOC,&GPIO_InitStructure);
-    GPIO_ResetBits(GPIOC,GPIO_Pin_6); /* SD card power up */
+    GPIO_ResetBits(GPIOC,GPIO_Pin_7); /* SD card power up */
     // delay same time for SD card power up
 
     if (SD_Init() == SD_OK)
@@ -3234,11 +3234,11 @@ int rt_hw_sdcard_init(void)
 
 __return:
     rt_kprintf("sdcard init failed\n");
-    GPIO_SetBits(GPIOC,GPIO_Pin_6); /* SD card power down */
+    GPIO_SetBits(GPIOC,GPIO_Pin_7); /* SD card power down */
 
     return 0;
 }
-//INIT_DEVICE_EXPORT(rt_hw_sdcard_init);
+INIT_DEVICE_EXPORT(rt_hw_sdcard_init);
 
 void SDIO_IRQHandler(void)
 {

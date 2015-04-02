@@ -2,7 +2,7 @@
 #include <board.h>
 
 #ifdef RT_USING_LWIP
-#include "stm32_eth.h"
+//#include "stm32_eth.h"
 #endif /* RT_USING_LWIP */
 
 #ifdef RT_USING_SPI
