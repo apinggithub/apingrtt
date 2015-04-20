@@ -119,30 +119,6 @@ void DebugMon_Handler(void)
 /*  file (startup_stm32f10x_xx.s).                                            */
 /******************************************************************************/
 
-#ifdef  RT_USING_LWIP
-/*******************************************************************************
-* Function Name  : EXTI4_IRQHandler
-* Description    : This function handles External lines 9 to 5 interrupt request.
-* Input          : None
-* Output         : None
-* Return         : None
-*******************************************************************************/
-void EXTI1_IRQHandler(void)
-{
-    extern void rt_dm9000_isr(void);
-
-    /* enter interrupt */
-    rt_interrupt_enter();
-
-    /* Clear the DM9000A EXTI line pending bit */
-    EXTI_ClearITPendingBit(EXTI_Line1);
-
-    rt_dm9000_isr();
-
-    /* leave interrupt */
-    rt_interrupt_leave();
-}
-#endif /* RT_USING_LWIP */
 
 /**
   * @}

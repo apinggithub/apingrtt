@@ -17,8 +17,8 @@ if os.getenv('RTT_CC'):
 STM32_TYPE = 'STM32F10X_HD'
 
 # lcd panel options
-# 'FMT0371','ILI932X', 'SSD1289'
-RT_USING_LCD_TYPE = 'SSD1289'
+# 'FMT0371','ILI932X', 'SSD1289','OTM4001A'
+RT_USING_LCD_TYPE = 'OTM4001A'
 
 # cross_tool provides the cross compiler
 # EXEC_PATH is the compiler execute path, for example, CodeSourcery, Keil MDK, IAR

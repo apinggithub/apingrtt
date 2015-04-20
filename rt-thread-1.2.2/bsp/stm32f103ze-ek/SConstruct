@@ -24,6 +24,12 @@ if rtconfig.PLATFORM == 'iar':
 	env.Replace(ARFLAGS = [''])
 	env.Replace(LINKCOM = ['$LINK $SOURCES $LINKFLAGS -o $TARGET --map project.map'])
 
+if rtconfig.PLATFORM == 'armcc':
+    env["TEMPFILE"] = SCons.Platform.TempFileMunge
+    # env["LINKCOM"] = "${TEMPFILE('$LINK -o $TARGET $SOURCES')}"
+    env["LINKCOM"] = "$LINK -o $TARGET $LINKFLAGS ${TEMPFILE('--via $SOURCES')}"
+    env["TEMPFILEPREFIX"] = ' '      # arm tool chain	
+	
 Export('RTT_ROOT')
 Export('rtconfig')
 

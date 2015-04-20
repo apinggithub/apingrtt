@@ -228,9 +228,9 @@ static rtgui_image_t *file_image, *folder_image;
 static struct rtgui_listbox_item items[] =
 {
 #ifdef RTGUI_USING_FONTHZ
-    {"湖羲恅璃標", RT_NULL},
-    {"恁寁恅璃標", RT_NULL},
-    {"豖堤", RT_NULL}
+    {"打开文件夹", RT_NULL},
+    {"选择文件夹", RT_NULL},
+    {"退出", RT_NULL}
 #else
     {"Open folder", RT_NULL},
     {"Select folder", RT_NULL},

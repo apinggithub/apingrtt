@@ -18,21 +18,23 @@ if GetDepend('RT_USING_LWIP'):
 
 # add DFS drvers.
 if GetDepend('RT_USING_DFS'):
-    src += ['rt_spi_device.c','rt_stm32f10x_spi.c','spi_flash_w25qxx.c','fs_test.c','sdcard.c']
+    src += ['rt_spi_flash_device.c','rt_stm32f10x_spi.c','spi_flash_w25qxx.c','fs_test.c','sdcard.c']
 
 # add RTC drvers.
 if GetDepend('RT_USING_RTC'):
     src += ['rtc.c']
-
+if GetDepend('RT_USING_TOUCHPANEL'):
+    src += ['touch_driver.c']
 # add RTGUI drvers.
-if GetDepend('RT_USING_RTGUI'):
-    src += ['touch.c']
-    if rtconfig.RT_USING_LCD_TYPE == 'ILI932X':
+if GetDepend('RT_USING_RTGUI'):   
+    src += ['key.c']
+    if rtconfig.RT_USING_LCD_TYPE == 'ILI932X' :
         src += ['ili_lcd_general.c']
     elif rtconfig.RT_USING_LCD_TYPE == 'SSD1289':
-        src += ['ssd1289.c']
-
-    
+        src += ['ssd1289.c']		
+    elif rtconfig.RT_USING_LCD_TYPE == 'OTM4001A':   
+	    src += ['otm4001a.c']
+ 
 CPPPATH = [cwd]
 
 group = DefineGroup('Drivers', src, depend = [''], CPPPATH = CPPPATH)

@@ -90,6 +90,8 @@
 
 /* SECTION: device filesystem */
 #define RT_USING_SPI
+#define RT_USING_SPI1
+#define RT_USING_SPI_FLASH
 #define RT_USING_DFS
 #define RT_USING_DFS_ELMFAT
 #define RT_DFS_ELM_WORD_ACCESS
@@ -162,8 +164,9 @@
 #define RT_LWIP_TCP_WND		8192
 
 /* SECTION: RT-Thread/GUI */
-/* #define RT_USING_RTGUI */
-
+#define RT_USING_RTGUI 
+#define RT_USING_TOUCHPANEL
+#define RT_USING_CALIBRATION
 /* name length of RTGUI object */
 #define RTGUI_NAME_MAX		12
 /* support 16 weight font */

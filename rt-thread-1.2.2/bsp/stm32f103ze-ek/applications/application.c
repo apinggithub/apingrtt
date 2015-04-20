@@ -21,6 +21,7 @@
 #include <board.h>
 #include <rtthread.h>
 
+
 #ifdef  RT_USING_COMPONENTS_INIT
 #include <components.h>
 #endif  /* RT_USING_COMPONENTS_INIT */
@@ -41,8 +42,8 @@
 #endif
 
 #include "led.h"
-
-extern void rt_spi_device_init(void);
+extern void gui_application_init(void);
+extern void rt_spi_flash_device_init(void);
 
 ALIGN(RT_ALIGN_SIZE)
 static rt_uint8_t led_stack[ 512 ];
@@ -73,12 +74,13 @@ static void led_thread_entry(void* parameter)
 }
 
 #ifdef RT_USING_RTGUI
+#ifdef RTGUI_USING_CALIBRATION
 rt_bool_t cali_setup(void)
 {
     rt_kprintf("cali setup entered\n");
     return RT_FALSE;
 }
-
+/*
 void cali_store(struct calibration_data *data)
 {
     rt_kprintf("cali finished (%d, %d), (%d, %d)\n",
@@ -86,7 +88,8 @@ void cali_store(struct calibration_data *data)
                data->max_x,
                data->min_y,
                data->max_y);
-}
+}*/
+#endif /* RTGUI_USING_CALIBRATION */
 #endif /* RT_USING_RTGUI */
 
 void rt_init_thread_entry(void* parameter)
@@ -96,7 +99,7 @@ void rt_init_thread_entry(void* parameter)
     rt_components_init();
 #endif
 	
-		rt_spi_device_init();
+		rt_spi_flash_device_init();
 
 #ifdef  RT_USING_FINSH
     finsh_set_device(RT_CONSOLE_DEVICE_NAME);
@@ -122,33 +125,50 @@ void rt_init_thread_entry(void* parameter)
 
 #ifdef RT_USING_RTGUI
     {
-        extern void rt_hw_lcd_init();
-        extern void rtgui_touch_hw_init(void);
-
+        extern void rt_hw_lcd_init(void); 
+				extern void rtgui_touch_hw_init(void);	
+			
         rt_device_t lcd;
 
         /* init lcd */
         rt_hw_lcd_init();
-
-        /* init touch panel */
-        rtgui_touch_hw_init();
-
+		
+#ifdef RT_USING_TOUCHPANEL	
+			 					
+				/* initilize touch panel */
+				rtgui_touch_hw_init();
+#endif /* RT_USING_TOUCHPANEL */
+			
         /* find lcd device */
         lcd = rt_device_find("lcd");
 
         /* set lcd device as rtgui graphic driver */
         rtgui_graphic_set_device(lcd);
-
+			
 #ifndef RT_USING_COMPONENTS_INIT
         /* init rtgui system server */
         rtgui_system_server_init();
+#endif /*#ifndef RT_USING_COMPONENTS_INIT*/
+
+#ifdef RTGUI_USING_CALIBRATION
+        //calibration_set_restore(cali_setup);
+        //calibration_set_after(cali_store);
+        //calibration_init();
+#endif /* #ifdef RTGUI_USING_CALIBRATION */		
+				gui_application_init();
+
+    }		
+#endif /* RT_USING_RTGUI */
+
+
+#ifdef RT_USING_USB_HOST
+    /* register stm32 usb host controller driver */
+    rt_hw_susb_init();
 #endif
 
-        calibration_set_restore(cali_setup);
-        calibration_set_after(cali_store);
-        calibration_init();
-    }
-#endif /* #ifdef RT_USING_RTGUI */
+		rt_thread_delay(50);
+    rt_device_init_all();
+		
 }
 
 int rt_application_init(void)

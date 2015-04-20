@@ -3,8 +3,9 @@
 from building import *
 
 cwd = GetCurrentDir()
-src = Glob('*.c')
+if GetDepend('RT_USING_CALIBRATION'):
+    src = Glob('*.c')
 
-group = DefineGroup('RTGUI', src, depend = ['RT_USING_RTGUI'])
+group = DefineGroup('RTGUI', src, depend = ['RT_USING_CALIBRATION'])
 
 Return('group')

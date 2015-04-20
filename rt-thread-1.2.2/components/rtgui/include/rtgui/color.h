@@ -16,7 +16,33 @@
 #define __RTGUI_COLOR_H__
 
 #include <rtgui/rtgui.h>
+/*
+ * The color used in the GUI:
+ *
+ *         bit        bit
+ * RGB565  15 R,G,B   0
+ * BGR565  15 B,G,R   0
+ * RGB888  23 R,G,B   0
+ * ARGB888 31 A,R,G,B 0
+ * RGBA888 31 R,G,B,A 0
+ * ABGR888 31 A,B,G,R 0
+ *
+ * The rtgui_color is defined as ARGB888.
+ *        bit31 A,R,G,B bit0
+ */
+#ifdef RTGUI_USING_BRG565
+#define RTGUI_ARGB(a, b, g, r)  \
+        ((rtgui_color_t)(((rt_uint8_t)(b)|\
+        (((unsigned)(rt_uint8_t)(g))<<8))|\
+        (((unsigned long)(rt_uint8_t)(r))<<16)|\
+        (((unsigned long)(rt_uint8_t)(a))<<24)))
+#define RTGUI_RGB(r, g, b)  RTGUI_ARGB(255, (b), (g), (r))
 
+#define RTGUI_RGB_B(c)  ((c) & 0xff)
+#define RTGUI_RGB_G(c)  (((c) >> 8)  & 0xff)
+#define RTGUI_RGB_R(c)  (((c) >> 16) & 0xff)
+#define RTGUI_RGB_A(c)  (((c) >> 24) & 0xff)
+#else
 #define RTGUI_ARGB(a, r, g, b)  \
         ((rtgui_color_t)(((rt_uint8_t)(r)|\
         (((unsigned)(rt_uint8_t)(g))<<8))|\
@@ -28,7 +54,7 @@
 #define RTGUI_RGB_G(c)  (((c) >> 8)  & 0xff)
 #define RTGUI_RGB_B(c)  (((c) >> 16) & 0xff)
 #define RTGUI_RGB_A(c)  (((c) >> 24) & 0xff)
-
+#endif
 extern const rtgui_color_t default_foreground;
 extern const rtgui_color_t default_background;
 

@@ -286,20 +286,20 @@ static rt_err_t rt_dm9000_init(rt_device_t dev)
     dm9000_io_write(DM9000_RCR, RCR_DIS_LONG | RCR_DIS_CRC | RCR_RXEN);	/* RX enable */
     dm9000_io_write(DM9000_IMR, IMR_PAR);
 
-	if (dm9000_device.mode == DM9000_AUTO)
-	{
-	    while (!(phy_read(1) & 0x20))
-	    {
-	        /* autonegation complete bit */
-	        rt_thread_delay(10);
-	        i++;
-	        if (i == 10000)
-	        {
-	            rt_kprintf("could not establish link\n");
-	            return 0;
-	        }
-	    }
-	}
+		if (dm9000_device.mode == DM9000_AUTO)
+		{
+				while (!(phy_read(1) & 0x20))
+				{
+						/* autonegation complete bit */
+						rt_thread_delay(10);
+						i++;
+						if (i == 10000)
+						{
+								rt_kprintf("could not establish link\n");
+								return 0;
+						}
+				}
+		}
 
     /* see what we've got */
     lnk = phy_read(17) >> 12;
@@ -631,8 +631,8 @@ static void GPIO_Configuration()
 
 static void FSMC_Configuration()
 {
-	FSMC_NORSRAMInitTypeDef FSMC_NORSRAMInitStructure;
-	FSMC_NORSRAMTimingInitTypeDef FSMC_NORSRAMTimingInitStructure;
+		FSMC_NORSRAMInitTypeDef FSMC_NORSRAMInitStructure;
+		FSMC_NORSRAMTimingInitTypeDef FSMC_NORSRAMTimingInitStructure;
 
     /* FSMC GPIO configure */
     {
@@ -717,28 +717,29 @@ static void FSMC_Configuration()
     FSMC_NORSRAMTimingInitStructure.FSMC_DataLatency = 0;
     FSMC_NORSRAMTimingInitStructure.FSMC_AccessMode = FSMC_AccessMode_A;
 
-	FSMC_NORSRAMInitStructure.FSMC_Bank = FSMC_Bank1_NORSRAM4;
-	FSMC_NORSRAMInitStructure.FSMC_DataAddressMux = FSMC_DataAddressMux_Disable;
-	FSMC_NORSRAMInitStructure.FSMC_MemoryType = FSMC_MemoryType_SRAM;
-	FSMC_NORSRAMInitStructure.FSMC_MemoryDataWidth = FSMC_MemoryDataWidth_16b;
-	FSMC_NORSRAMInitStructure.FSMC_BurstAccessMode = FSMC_BurstAccessMode_Disable;
-	FSMC_NORSRAMInitStructure.FSMC_AsynchronousWait = FSMC_AsynchronousWait_Disable;
-	FSMC_NORSRAMInitStructure.FSMC_WaitSignalPolarity = FSMC_WaitSignalPolarity_Low;
-	FSMC_NORSRAMInitStructure.FSMC_WrapMode = FSMC_WrapMode_Disable;
-	FSMC_NORSRAMInitStructure.FSMC_WaitSignalActive = FSMC_WaitSignalActive_BeforeWaitState;
-	FSMC_NORSRAMInitStructure.FSMC_WriteOperation = FSMC_WriteOperation_Enable;
-	FSMC_NORSRAMInitStructure.FSMC_WaitSignal = FSMC_WaitSignal_Disable;
-	FSMC_NORSRAMInitStructure.FSMC_ExtendedMode = FSMC_ExtendedMode_Disable;
-	FSMC_NORSRAMInitStructure.FSMC_WriteBurst = FSMC_WriteBurst_Disable;
-	FSMC_NORSRAMInitStructure.FSMC_ReadWriteTimingStruct = &FSMC_NORSRAMTimingInitStructure;
-	FSMC_NORSRAMInitStructure.FSMC_WriteTimingStruct = &FSMC_NORSRAMTimingInitStructure;
+		FSMC_NORSRAMInitStructure.FSMC_Bank = FSMC_Bank1_NORSRAM4;
+		FSMC_NORSRAMInitStructure.FSMC_DataAddressMux = FSMC_DataAddressMux_Disable;
+		FSMC_NORSRAMInitStructure.FSMC_MemoryType = FSMC_MemoryType_SRAM;
+		FSMC_NORSRAMInitStructure.FSMC_MemoryDataWidth = FSMC_MemoryDataWidth_16b;
+		FSMC_NORSRAMInitStructure.FSMC_BurstAccessMode = FSMC_BurstAccessMode_Disable;
+		FSMC_NORSRAMInitStructure.FSMC_AsynchronousWait = FSMC_AsynchronousWait_Disable;
+		FSMC_NORSRAMInitStructure.FSMC_WaitSignalPolarity = FSMC_WaitSignalPolarity_Low;
+		FSMC_NORSRAMInitStructure.FSMC_WrapMode = FSMC_WrapMode_Disable;
+		FSMC_NORSRAMInitStructure.FSMC_WaitSignalActive = FSMC_WaitSignalActive_BeforeWaitState;
+		FSMC_NORSRAMInitStructure.FSMC_WriteOperation = FSMC_WriteOperation_Enable;
+		FSMC_NORSRAMInitStructure.FSMC_WaitSignal = FSMC_WaitSignal_Disable;
+		FSMC_NORSRAMInitStructure.FSMC_ExtendedMode = FSMC_ExtendedMode_Disable;
+		FSMC_NORSRAMInitStructure.FSMC_WriteBurst = FSMC_WriteBurst_Disable;
+		FSMC_NORSRAMInitStructure.FSMC_ReadWriteTimingStruct = &FSMC_NORSRAMTimingInitStructure;
+		FSMC_NORSRAMInitStructure.FSMC_WriteTimingStruct = &FSMC_NORSRAMTimingInitStructure;
 
-	FSMC_NORSRAMInit(&FSMC_NORSRAMInitStructure);
+		FSMC_NORSRAMInit(&FSMC_NORSRAMInitStructure);
 
-	/* Enable FSMC Bank1_SRAM Bank4 */
-	FSMC_NORSRAMCmd(FSMC_Bank1_NORSRAM4, ENABLE);
+		/* Enable FSMC Bank1_SRAM Bank4 */
+		FSMC_NORSRAMCmd(FSMC_Bank1_NORSRAM4, ENABLE);
 }
 
+#ifdef RT_USING_LWIP
 int rt_hw_dm9000_init(void)
 {
     RCC_Configuration();
@@ -783,6 +784,7 @@ int rt_hw_dm9000_init(void)
     return 0;
 }
 INIT_DEVICE_EXPORT(rt_hw_dm9000_init);
+#endif /* RT_USING_LWIP */
 
 void dm9000(void)
 {
@@ -802,6 +804,24 @@ void dm9000(void)
     rt_kprintf("IMR   (0xFF): %02x\n", dm9000_io_read(DM9000_IMR));
     rt_kprintf("\n");
 }
+
+#ifdef  RT_USING_LWIP
+void EXTI1_IRQHandler(void)
+{
+    extern void rt_dm9000_isr(void);
+
+    /* enter interrupt */
+    rt_interrupt_enter();
+
+    /* Clear the DM9000A EXTI line pending bit */
+    EXTI_ClearITPendingBit(EXTI_Line1);
+
+    rt_dm9000_isr();
+
+    /* leave interrupt */
+    rt_interrupt_leave();
+}
+#endif /* RT_USING_LWIP */
 
 #ifdef RT_USING_FINSH
 #include <finsh.h>
