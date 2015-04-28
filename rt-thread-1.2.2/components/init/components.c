@@ -49,6 +49,7 @@ INIT_EXPORT(rti_end,"7");
 /**
  * RT-Thread Components Initialization for board
  */
+#ifdef RT_USING_COMPONENTS_INIT
 void rt_components_board_init(void)
 {
 #ifndef _MSC_VER
@@ -71,7 +72,7 @@ void rt_components_board_init(void)
 #endif
 #endif
 }
-
+#endif
 /**
  * RT-Thread Components Initialization
  */
@@ -89,14 +90,14 @@ void rt_components_init(void)
 		result = desc->fn();
 		rt_kprintf(":%d done\n", result);
 	}
-#else
+#endif
+#ifdef RT_USING_COMPONENTS_INIT	
     const init_fn_t *fn_ptr;
 
     for (fn_ptr = &__rt_init_rti_board_end; fn_ptr < &__rt_init_rti_end; fn_ptr ++)
     {
         (*fn_ptr)();
-    }
-#endif
+    }	
 #else
 #ifdef RT_USING_MODULE
     rt_system_module_init();
@@ -119,6 +120,10 @@ void rt_components_init(void)
 #endif
 
 #ifdef RT_USING_DFS
+#ifndef RT_USING_COMPONENTS_INIT
+		rt_hw_spi_init();
+		rt_spi_flash_device_init();
+#endif	
 	/* initialize the device file system */
 	dfs_init();
 
@@ -165,13 +170,21 @@ void rt_components_init(void)
 	pthread_system_init();
 #endif
 #endif
-
+extern void rt_hw_lcd_init(void); 
 #ifdef RT_USING_RTGUI
-	rtgui_system_server_init();
-#endif
+	/* init lcd */
+		rt_hw_lcd_init();	
+	 //rtgui_system_server_init();
+#ifdef RT_USING_TOUCHPANEL				 					
+		/* initilize touch panel */
+		rtgui_touch_hw_init();
+#endif /* RT_USING_TOUCHPANEL */
+	
+#endif /* RT_USING_RTGUI */
 
 #ifdef RT_USING_USB_HOST
 	rt_usb_host_init();
-#endif
-#endif
+#endif /* RT_USING_USB_HOST */
+#endif /* RT_USING_COMPONENTS_INIT */
+#endif /* _MSC_VER */
 }

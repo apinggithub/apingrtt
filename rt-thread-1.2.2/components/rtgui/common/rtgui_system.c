@@ -55,7 +55,7 @@ int rtgui_system_server_init(void)
     rtgui_system_theme_init();
     return 0;
 }
-INIT_APP_EXPORT(rtgui_system_server_init);
+//INIT_APP_EXPORT(rtgui_system_server_init);
 
 /************************************************************************/
 /* RTGUI Timer                                                          */

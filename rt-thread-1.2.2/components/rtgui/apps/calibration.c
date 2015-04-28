@@ -4,6 +4,7 @@
 #include <rtgui/rtgui_app.h>
 #include <rtgui/widgets/window.h>
 #include <rtgui/calibration.h>
+#include <dfs_posix.h>
 
 static rt_bool_t (*_cali_restore)(void);
 void calibration_set_restore(rt_bool_t (*calibration_restore)(void))
@@ -13,8 +14,8 @@ void calibration_set_restore(rt_bool_t (*calibration_restore)(void))
 
 static void (*_cali_after)(struct calibration_data *data);
 void calibration_set_after(void (*calibration_after)(struct calibration_data *data))
-{
-    _cali_after = calibration_after;
+{		
+    _cali_after = calibration_after;				
 }
 
 #define CALIBRATION_STEP_LEFTTOP        0
@@ -376,6 +377,7 @@ void calibration_init(void)
 #include <finsh.h>
 void calibration(void)
 {
+		_cali_restore = RT_NULL;
     calibration_init();
 }
 FINSH_FUNCTION_EXPORT(calibration, perform touch calibration);

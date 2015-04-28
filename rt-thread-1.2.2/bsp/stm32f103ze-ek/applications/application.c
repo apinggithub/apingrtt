@@ -21,16 +21,14 @@
 #include <board.h>
 #include <rtthread.h>
 
-
-#ifdef  RT_USING_COMPONENTS_INIT
 #include <components.h>
-#endif  /* RT_USING_COMPONENTS_INIT */
 
 #ifdef RT_USING_DFS
 /* dfs filesystem:ELM filesystem init */
 #include <dfs_elm.h>
 /* dfs Filesystem APIs */
 #include <dfs_fs.h>
+#include <rt_spi_flash_device.h>
 #endif
 
 #ifdef RT_USING_RTGUI
@@ -39,12 +37,18 @@
 #include <rtgui/rtgui_system.h>
 #include <rtgui/driver.h>
 #include <rtgui/calibration.h>
+#include <touch_setup.h>
+
+#endif
+
+#ifdef  RT_USING_FINSH
+#include "shell.h"
 #endif
 
 #include "led.h"
+extern void rtgui_touch_hw_init(void);
 extern void gui_application_init(void);
-extern void rt_spi_flash_device_init(void);
-
+extern void calibration(void);
 ALIGN(RT_ALIGN_SIZE)
 static rt_uint8_t led_stack[ 512 ];
 static struct rt_thread led_thread;
@@ -73,44 +77,18 @@ static void led_thread_entry(void* parameter)
     }
 }
 
-#ifdef RT_USING_RTGUI
-#ifdef RTGUI_USING_CALIBRATION
-rt_bool_t cali_setup(void)
-{
-    rt_kprintf("cali setup entered\n");
-    return RT_FALSE;
-}
-/*
-void cali_store(struct calibration_data *data)
-{
-    rt_kprintf("cali finished (%d, %d), (%d, %d)\n",
-               data->min_x,
-               data->max_x,
-               data->min_y,
-               data->max_y);
-}*/
-#endif /* RTGUI_USING_CALIBRATION */
-#endif /* RT_USING_RTGUI */
 
 void rt_init_thread_entry(void* parameter)
 {
-#ifdef RT_USING_COMPONENTS_INIT
-    /* initialization RT-Thread Components */
-    rt_components_init();
-#endif
 	
-		rt_spi_flash_device_init();
-
-#ifdef  RT_USING_FINSH
-    finsh_set_device(RT_CONSOLE_DEVICE_NAME);
-#endif  /* RT_USING_FINSH */
-
-    /* Filesystem Initialization */
+		/* initialization RT-Thread Components */
+		rt_components_init();
+		
 #if defined(RT_USING_DFS) && defined(RT_USING_DFS_ELMFAT)
-     /* mount SPI flash as root directory */ 
+		/* mount SPI flash as root directory */ 
     if (dfs_mount("flash0", "/", "elm", 0, 0) == 0)
-    {
-        rt_kprintf("flash0 mount to /.\n");
+    {      
+				rt_kprintf("flash0 mount to /.\n");				
     }
     else
         rt_kprintf("flash0 mount to / failed.\n");
@@ -119,45 +97,25 @@ void rt_init_thread_entry(void* parameter)
     {
         rt_kprintf("sd0 mount to /dev.\n");
     }
-    else
-        rt_kprintf("sd0 mount to /dev failed.\n");
-#endif  /* RT_USING_DFS */
-
+    else		
+        rt_kprintf("sd0 mount to /dev failed.\n");	
+#endif /* RT_USING_DFS */		
+				       
 #ifdef RT_USING_RTGUI
-    {
-        extern void rt_hw_lcd_init(void); 
-				extern void rtgui_touch_hw_init(void);	
-			
-        rt_device_t lcd;
-
-        /* init lcd */
-        rt_hw_lcd_init();
-		
-#ifdef RT_USING_TOUCHPANEL	
-			 					
-				/* initilize touch panel */
-				rtgui_touch_hw_init();
-#endif /* RT_USING_TOUCHPANEL */
-			
-        /* find lcd device */
-        lcd = rt_device_find("lcd");
-
-        /* set lcd device as rtgui graphic driver */
-        rtgui_graphic_set_device(lcd);
-			
-#ifndef RT_USING_COMPONENTS_INIT
-        /* init rtgui system server */
-        rtgui_system_server_init();
-#endif /*#ifndef RT_USING_COMPONENTS_INIT*/
-
-#ifdef RTGUI_USING_CALIBRATION
-        //calibration_set_restore(cali_setup);
-        //calibration_set_after(cali_store);
-        //calibration_init();
-#endif /* #ifdef RTGUI_USING_CALIBRATION */		
+		{
+				rt_device_t lcd; 	
+				/* find lcd device */
+				lcd = rt_device_find("lcd");
+				/* set lcd device as rtgui graphic driver */
+				rtgui_graphic_set_device(lcd);
+				rtgui_system_server_init();
 				gui_application_init();
-
-    }		
+#ifdef RTGUI_USING_CALIBRATION
+				calibration_set_restore(calibration_restore);//initialize the pointer to load user data
+				calibration_set_after(calibration_store); //initialize the poiter to save user data
+				calibration_init();		
+#endif /* RTGUI_USING_CALIBRATION */	
+		}
 #endif /* RT_USING_RTGUI */
 
 
@@ -176,7 +134,7 @@ int rt_application_init(void)
     rt_thread_t init_thread;
 
     rt_err_t result;
-
+		
     /* init led thread */
     result = rt_thread_init(&led_thread,
                             "led",

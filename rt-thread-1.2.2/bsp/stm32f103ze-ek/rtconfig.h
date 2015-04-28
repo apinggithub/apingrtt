@@ -111,7 +111,7 @@
 #define DFS_FD_MAX					4
 
 /* SECTION: lwip, a lighwight TCP/IP protocol stack */
- #define RT_USING_LWIP 
+// #define RT_USING_LWIP 
  #define RT_USING_LWIP141
 /* LwIP uses RT-Thread Memory Management */
 #define RT_LWIP_USING_RT_MEM
